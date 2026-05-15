@@ -61,7 +61,7 @@ function render() {
     const aiHandEl = document.getElementById('ai-hand');
     const aiArea = document.getElementById('ai-area');
     
-    // AI Hand Logic
+// 1. AI Hand Logic
     if (G.isPeekActive) {
         aiArea.classList.add('peek-active');
         aiHandEl.innerHTML = G.aiHand.map(c => renderCardHTML(c, false)).join('');
@@ -69,13 +69,20 @@ function render() {
         aiArea.classList.remove('peek-active');
         aiHandEl.innerHTML = G.aiHand.map(() => `<div class="card back" style="width:35px; height:50px; border-radius:5px"></div>`).join('');
     }
+
+    // 2. Perbarui Angka Jumlah Kartu
+    // Memperbarui angka sisa kartu di tumpukan pusat (Deck)
+    const deckCtEl = document.getElementById('deck-ct');
+    if (deckCtEl) deckCtEl.textContent = G.deck.length;
+
+    // Memperbarui angka jumlah kartu di tangan AI
     document.getElementById('ai-ct').textContent = G.aiHand.length;
 
-    // Discard Pile
+    // 3. Discard Pile (Kartu Terbuang)
     const top = G.discardPile[G.discardPile.length - 1];
     document.getElementById('discard-top').innerHTML = renderCardHTML(top, false);
 
-    // Player Hand
+    // 4. Player Hand (Kartu Kamu)
     document.getElementById('pl-hand').innerHTML = G.playerHand.map(c => renderCardHTML(c, true)).join('');
     
     updateStatus();
@@ -287,20 +294,30 @@ function drawCard() {
     if(G.turn !== 'player') return;
     if(G.deck.length === 0) return;
 
-    const startEl = event.currentTarget;
-    const endEl = document.getElementById('pl-hand');
+    const startEl = event.currentTarget; // Area DECK
+    const plHandEl = document.getElementById('pl-hand');
+    
     const newCard = G.deck.pop();
 
-    // Animasi dari dek ke tangan
-    animateCard(startEl, endEl, { ...newCard, hideFace: true }, () => {
+    // Buat elemen bayangan sementara untuk mendapatkan koordinat tujuan yang benar
+    const tempDiv = document.createElement('div');
+    tempDiv.className = 'card fan-card';
+    tempDiv.style.visibility = 'hidden';
+    plHandEl.appendChild(tempDiv);
+    
+    // Ambil koordinat tujuan (paling kanan di container tangan)
+    const endRect = tempDiv.getBoundingClientRect();
+
+    // Jalankan animasi dari DECK ke posisi baru di tangan
+    animateToTarget(startEl, endRect, { ...newCard, hideFace: true }, () => {
+        tempDiv.remove(); // Hapus elemen pembantu
         G.playerHand.push(newCard);
         G.isPeekActive = false;
         G.turn = 'ai';
-        render();
+        render(); // Render ulang akan menghitung ulang posisi kipas yang rapi
         setTimeout(aiTurn, 600);
     });
 }
-
 
 function updateStatus() {
     const textEl = document.getElementById('status-text');
@@ -353,7 +370,32 @@ function cekOrientasi() {
 
 // Jalankan cek setiap kali layar diputar
 window.addEventListener("resize", cekOrientasi);
-
-
-
 /*tombol exit game*/
+
+
+function animateToTarget(startEl, endRect, cardObj, callback) {
+    const startRect = startEl.getBoundingClientRect();
+    const ghost = document.createElement('div');
+    
+    ghost.className = `card anim-card ${cardObj.type === 'skill' ? 'skill-card' : (cardObj.isWild ? 'joker-card' : '')}`;
+    if (cardObj.hideFace) ghost.classList.add('back');
+
+    // Posisi awal di DECK
+    ghost.style.top = startRect.top + 'px';
+    ghost.style.left = startRect.left + 'px';
+    ghost.style.width = startRect.width + 'px';
+    ghost.style.height = startRect.height + 'px';
+
+    document.body.appendChild(ghost);
+    ghost.offsetHeight; // Trigger reflow
+
+    // Gerakkan ke koordinat tangan pemain (kanan bawah)
+    ghost.style.top = endRect.top + 'px';
+    ghost.style.left = endRect.left + 'px';
+    ghost.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+
+    setTimeout(() => {
+        ghost.remove();
+        if (callback) callback();
+    }, 600);
+}

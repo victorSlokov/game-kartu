@@ -73,7 +73,7 @@
     object-fit: cover; 
     object-position: top; 
     margin-bottom: -15px;
-    z-index: 2001;
+    z-index: 2000;
     filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
 }
 

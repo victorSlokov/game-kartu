@@ -1,24 +1,51 @@
-/* Hanya jalan kalau layar miring (Landscape) */
-@media screen and (orientation: landscape) {
-    .peringatan {
-        display: none;
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #c0d8f0;
+  background-image:
+    repeating-linear-gradient(45deg,rgba(255,255,255,0.18) 0,rgba(255,255,255,0.18) 2px,transparent 2px,transparent 22px),
+    repeating-linear-gradient(-45deg,rgba(255,255,255,0.1) 0,rgba(255,255,255,0.1) 2px,transparent 2px,transparent 22px);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* --- RESPONSIVE UNTUK HP --- */
+
+/* Jika layar HP tegak (Portrait) atau lebar layar kecil */
+@media screen and (max-width: 480px) {
+    .char-wrapper img {
+        width: 15vh; /* Karakter mengecil di layar HP */
+    }
+    
+    .speech-bubble {
+        font-size: 12px; /* Perkecil teks balon agar pas */
+        padding: 5px 8px;
+        max-width: 120px;
     }
 }
 
-/* Hanya jalan kalau layar tegak (Portrait) */
-@media screen and (orientation: portrait) {
-    .peringatan {
-        display: flex;
-        /* Munculkan pesan: "Tolong miringkan HP kamu" */
+/* Jika layar HP miring (Landscape) tapi tingginya sempit */
+@media screen and (max-height: 400px) {
+    .char-wrapper img {
+        width: 20vh; /* Sesuaikan agar tidak memakan tempat ke atas */
+    }
+    
+    .char-corner {
+        bottom: 5px; /* Lebih mepet ke bawah */
     }
 }
-/* Sembunyikan peringatan jika layar miring (Landscape) */
-@media screen and (orientation: landscape) {
-    #orientation-warning { 
-        display: none; 
-    }
-}
-
 
 :root {
             --primary: #378ADD;
@@ -33,26 +60,11 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        body { 
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        /* Pengaturan Background */
-        background-image: url('Sheriff Colt.jpg');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        color: #333;
-        }
+       
 
         #app { 
             width: 100%;
             max-width: 480px;
-          
             min-height: 600px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -188,15 +200,17 @@
 
 /* Container Utama - Kunci di Pojok Kiri Bawah */
 .char-corner {
-    position: absolute;
+   position: absolute;
     bottom: 10px;
-    left: 10px; /* Jarak tetap dari kiri */
+    left: 10px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Kunci orientasi ke kiri agar karakter tidak geser saat teks panjang */
+    align-items: flex-start;
     z-index: 100;
     pointer-events: none;
-    width: 200px; /* Berikan lebar tetap agar container tidak kembang kempis */
+    /* Ubah lebar dari 200px menjadi auto agar mengikuti gambar */
+    width: auto; 
+    max-width: 30%; /* Batasi agar tidak lebih dari 30% lebar layar */
 }
 
 /* Balon Teks */
@@ -227,11 +241,14 @@
 /* Wrapper Gambar Karakter */
 
 .char-wrapper img {
-    width: 200px;
-    height: auto; /* Tentukan tinggi pasti */
-    object-fit: contain; /* Memastikan gambar tetap dalam bingkai tanpa merubah rasio */
+   /* Gunakan lebar responsif (vh/vw) daripada pixel (px) */
+    width: 25vh; /* Ukuran default berdasarkan tinggi layar */
+    max-width: 180px; /* Batas maksimal di layar besar */
+    height: auto;
+    object-fit: contain;
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
     display: block;
+    transition: width 0.3s ease; /* Transisi halus saat berubah ukuran */
 }
 
 
@@ -296,4 +313,43 @@
 
 * {
     outline: 1px solid red !important;
+}
+
+
+
+
+
+/* Styling khusus kartu Deck */
+/* 3. Pastikan container deck bisa menampung angka di tengah */
+.deck-card {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* 2. Update styling angka Deck */
+#deck-ct {
+    font-family: 'AlteSchwabacher', serif; /* Ganti font-display menjadi font-family */
+    font-size: 32px; /* Ukuran font ini biasanya kecil, jadi coba diperbesar */
+    pointer-events: none;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8); /* Tambahkan shadow agar angka terlihat jelas */
+    z-index: 10;
+}
+
+/* Opsional: Berikan efek hover agar pemain tahu ini bisa diklik */
+.deck-card:hover {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+    
+   
+}
+
+/* 1. Letakkan @font-face di paling atas file CSS */
+@font-face {
+    font-family: 'AlteSchwabacher'; /* Gunakan nama yang simpel tanpa titik */
+    src: url('alte-schwabacher.regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
