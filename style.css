@@ -1,0 +1,299 @@
+/* Hanya jalan kalau layar miring (Landscape) */
+@media screen and (orientation: landscape) {
+    .peringatan {
+        display: none;
+    }
+}
+
+/* Hanya jalan kalau layar tegak (Portrait) */
+@media screen and (orientation: portrait) {
+    .peringatan {
+        display: flex;
+        /* Munculkan pesan: "Tolong miringkan HP kamu" */
+    }
+}
+/* Sembunyikan peringatan jika layar miring (Landscape) */
+@media screen and (orientation: landscape) {
+    #orientation-warning { 
+        display: none; 
+    }
+}
+
+
+:root {
+            --primary: #378ADD;
+            --primary-dark: #26215C;
+            --skill-bg: #EEEDFE;
+            --skill-border: #7F77DD;
+            --danger: #E24B4A;
+            --bg-secondary: #f8f9fa;
+            --card-width: 65px;
+            --card-height: 95px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* Pengaturan Background */
+        background-image: url('Sheriff Colt.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        color: #333;
+        }
+
+        #app { 
+            width: 100%;
+            max-width: 480px;
+          
+            min-height: 600px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        .screen { display: none; }
+        .screen.active { display: flex; flex-direction: column; height: 100%; }
+
+        /* Card Styling */
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background: white;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            
+        }
+
+        .card:hover { transform: translateY(-8px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .card.back { 
+            background: linear-gradient(135deg, #3C3489 0%, #26215C 100%);
+            border-color: #26215C;
+            cursor: pointer;
+        }
+
+        .card.skill-card { background: var(--skill-bg); border-color: var(--skill-border); color: #3C3489; }
+        .card.joker-card { background: #FCEBEB; border-color: var(--danger); }
+        
+        .red { color: #D85A30; }
+        .rank { font-size: 22px; font-weight: bold; line-height: 1; }
+        .suit { font-size: 18px; }
+
+        /* Layout Area */
+        .hand-wrap { 
+            background: var(--bg-secondary); 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin: 10px 0;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+        
+        .hand-row { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 8px; 
+            min-height: 100px; 
+            justify-content: center; 
+        }
+
+        .play-area { 
+         display: flex; 
+        background-color: #ffffff; /* Warna putih */
+        justify-content: center; 
+        align-items: center; 
+        gap: 40px; 
+        margin: 20px 0; 
+    
+        /* Tambahkan dua baris ini */
+        border-radius: 15px;      /* Membuat sudut melengkung (tidak lancip) */
+        padding: 20px;            /* Memberi jarak/margin di dalam sisi putih */
+    
+        /* Opsional: Tambahkan bayangan lembut agar lebih estetik */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .status { 
+            padding: 12px; 
+            text-align: center; 
+            border-radius: 10px; 
+            font-size: 14px; 
+            background: #eee;
+            margin-bottom: 10px;
+        }
+
+        .status.active { 
+            background: #e3f2fd; 
+            color: #1976d2; 
+            font-weight: bold; 
+            border: 1px solid #bbdefb; 
+        }
+
+        /* Utility */
+        .btn { 
+            padding: 12px 24px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-blue { background: var(--primary); color: white; width: 100%; }
+        .btn-blue:hover { background: #2b72b9; }
+
+        .peek-active { border-color: var(--skill-border); background: #f0efff; box-shadow: 0 0 15px rgba(127,119,221,0.2); }
+
+        #toast {
+            position: absolute;
+            top: 20px; left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            font-size: 13px;
+            z-index: 1000;
+            opacity: 0;
+            transition: 0.4s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* Card Animation Styles */
+.anim-card {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Container Utama - Kunci di Pojok Kiri Bawah */
+.char-corner {
+    position: absolute;
+    bottom: 10px;
+    left: 10px; /* Jarak tetap dari kiri */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Kunci orientasi ke kiri agar karakter tidak geser saat teks panjang */
+    z-index: 100;
+    pointer-events: none;
+    width: 200px; /* Berikan lebar tetap agar container tidak kembang kempis */
+}
+
+/* Balon Teks */
+.speech-bubble {
+    background: #ffffff;
+    border: 2px solid var(--primary);
+    border-radius: 15px;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    min-height: 40px; /* Berikan tinggi minimal agar balon tidak loncat saat teks kosong */
+    max-width: 160px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: relative;
+    pointer-events: auto;
+}
+
+/* Ekor Balon Teks - Disesuaikan untuk posisi kiri */
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 20px; /* Ekor di sebelah kiri mengikuti karakter */
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: #ffffff transparent transparent;
+}
+
+/* Wrapper Gambar Karakter */
+
+.char-wrapper img {
+    width: 200px;
+    height: auto; /* Tentukan tinggi pasti */
+    object-fit: contain; /* Memastikan gambar tetap dalam bingkai tanpa merubah rasio */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+    display: block;
+}
+
+
+
+/*animasi mulai game*/
+/* --- Tambahkan di bagian atas atau bagian animasi --- */
+
+/* Animasi Transisi Layar */
+@keyframes screenIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes screenOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    animation: screenIn 0.5s ease forwards; /* Efek muncul */
+}
+
+/* Class untuk animasi keluar (akan dipicu via JS) */
+.screen-exit {
+    animation: screenOut 0.4s ease forwards !important;
+}
+
+/* Tombol Exit di Game Area */
+.exit-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(226, 75, 74, 0.15);
+    color: #E24B4A;
+    border: 1px solid #E24B4A;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+}
+
+.exit-btn:hover {
+    background: #E24B4A;
+    color: white;
+}
+
+/* Animasi khusus Ikon Win/Lose */
+#res-ico {
+    display: block;
+    animation: bounce 1s infinite alternate cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounce {
+    from { transform: scale(0.8); }
+    to { transform: scale(1.2); }
+}
+
+* {
+    outline: 1px solid red !important;
+}

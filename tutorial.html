@@ -1,0 +1,17 @@
+<button class="btn" style="background: #6c757d; color: white; margin-top: 10px;" onclick="startTutorial()">Cara Bermain</button>
+<link rel="stylesheet" href="tutorial.css">
+<div id="tutorial-overlay" style="display: none;">
+    <div class="tut-content">
+        <div class="tut-char-box">
+            <img src="karakter.gif" id="tut-char-img">
+            <div class="tut-bubble">
+                <p id="tut-text">Halo! Aku akan mengajarimu cara bermain.</p>
+                <div class="tut-footer">
+                    <span id="tut-step">1/5</span>
+                    <button onclick="nextTutorialStep()" id="tut-next-btn">Lanjut</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="tutorial.js"></script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Match + Skills</title>
+    <!-- Menghubungkan file CSS eksternal -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tutorial.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="char-corner">
+    <div class="speech-bubble">
+        <p id="status-text">Ayo main!</p>
+    </div>
+    <div class="char-wrapper">
+        <img src="karakter.gif" id="char-img" alt="Karakter">
+    </div>
+</div>
+
+<div id="app">
+    <div id="toast"></div>
+
+    <!-- Screen: Title -->
+    <div id="s-title" class="screen active" style="justify-content: center; align-items: center; text-align: center;">
+        <div style="font-size: 80px; margin-bottom: 20px;">🃏</div>
+        <h1 style="font-size: 28px; margin-bottom: 10px;">Wild Match</h1>
+        <p style="color: #666; margin-bottom: 30px; padding: 0 20px;">Gunakan strategi dan Skill Peek untuk mengalahkan AI!</p>
+        <button class="btn btn-blue" onclick="startGame()">Mulai Permainanan</button>
+    </div>
+
+    <!-- Screen: Game -->
+    <div id="s-game" class="screen">
+        <div class="hand-wrap" id="ai-area">
+            <div style="font-size: 12px; margin-bottom: 10px; text-align: center; opacity: 0.7;">AI HAND (<span id="ai-ct">0</span>)</div>
+            <div id="ai-hand" class="hand-row"></div>
+        </div>
+
+        <div class="play-area">
+            <div style="text-align: center;">
+                <div style="font-size: 10px; margin-bottom: 5px; font-weight: bold;">DECK</div>
+                <div class="card back" onclick="drawCard()"></div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 10px; margin-bottom: 5px; font-weight: bold;">PILE</div>
+                <div id="discard-top"></div>
+            </div>
+        </div>
+
+
+
+        <div class="hand-wrap" style="flex-grow: 1;">
+            <div style="font-size: 12px; margin-bottom: 10px; text-align: center; opacity: 0.7;">KARTU KAMU</div>
+            <div id="pl-hand" class="hand-row"></div>
+        </div>
+    </div>
+
+    <!-- Screen: Result -->
+    <div id="s-result" class="screen" style="justify-content: center; align-items: center; text-align: center;">
+        <div id="res-ico" style="font-size: 80px;">🏆</div>
+        <h2 id="res-title" style="font-size: 32px; margin: 20px 0;">Kamu Menang!</h2>
+        <button class="btn btn-blue" onclick="location.reload()">Main Lagi</button>
+    </div>
+
+
+    <button class="btn" style="background: #6c757d; color: white; margin-top: 10px;" onclick="startTutorial()">Cara Bermain</button>
+    <button class="btn" style="background: #6c757d; color: white; margin-top: 10px;" onclick="exitGame()">✕ Exit</button>
+<div id="tutorial-overlay" style="display: none;">
+    <div class="tut-content">
+        <div class="tut-char-box">
+            <img src="karakter.gif" id="tut-char-img">
+            <div class="tut-bubble">
+                <p id="tut-text">Halo! Aku akan mengajarimu cara bermain.</p>
+                <div class="tut-footer">
+                    <span id="tut-step">1/5</span>
+                    <button onclick="nextTutorialStep()" id="tut-next-btn">Lanjut</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+<script src="script.js" defer></script>
+<script src="tutorial.js" defer></script>
+<script src="exit.js" defer></script>
+</body>
+</html>
